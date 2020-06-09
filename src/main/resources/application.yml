@@ -1,0 +1,28 @@
+# mybatis-plus输出所有打印语句的配置
+# mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      url: jdbc:mysql://49.235.24.173:3306/timber?serverTimezone=Asia/Shanghai&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 60000
+      username: root
+      password: roottoor
+  mvc:
+    view:
+      suffix: .html
+
+server:
+  port: 8081
+
+mybatis:
+  mapper-locations: classpath*:mapper/*Mapper.xml
+  ## 配置驼峰是为了让mybatis的sql查出的数据,能够准确的封装到对象中,注意是查出的数据, 不匹配也
+  ## 仅仅是无法封装进对象而已,并不会报错
+  configuration:
+    map-underscore-to-camel-case: true
