@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入样式 -->
+
+    <!-- import Vue before Element -->
+    <style>
+        .head {
+            /*color: #66CCFF;*/
+            text-align: center;
+        }
+
+        .footer {
+            color: #999;
+            size: A4;
+            text-align: center;
+        }
+
+        /*天依蓝*/
+        .vocal {
+            color: #66CCFF;
+            text-align: center;
+        }
+
+        #formA {
+            text-align: center;
+        }
+
+        .centerType {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+<!--vue-->
+<div id="app">
+    <h1 class="head"> {{head}}</h1>
+    <div class="head">
+        <img :src="url" width="50%" height="50%"/>
+    </div>
+
+    <form action="/wordgame/user/regist" enctype="text/plain" id="formA">
+        <p class="">用户名:<input type="text" name="username"/></p>
+        <p class="">&emsp;密码:<input type="text" name="password"/></p>
+        <p class="">&emsp;电话:<input type="text" name="phone"/></p>
+        <p class="">&emsp;邮箱:<input type="text" name="email"/></p>
+        <input type="submit" value="注册"/>
+    </form>
+
+    <div class="footer">
+        {{foot}}
+    </div>
+</div>
+<!--vue结束-->
+
+</body>
+<script src="vue.js"></script>
+<script src="vue-router.js"></script>
+
+<script>
+    var routerObj = new VueRouter({
+
+    });
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            head: "用户注册",
+            foot: "皖ICP备19017745号-1",
+            url: "./pic/regist.png"
+        },
+        methods: {},
+        router: routerObj
+    });
+
+</script>
+
+
+</html>
+

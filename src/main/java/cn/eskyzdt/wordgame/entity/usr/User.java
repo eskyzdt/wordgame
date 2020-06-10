@@ -1,5 +1,7 @@
 package cn.eskyzdt.wordgame.entity.usr;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,6 +22,7 @@ public class User {
     /**
      * 用户id
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**

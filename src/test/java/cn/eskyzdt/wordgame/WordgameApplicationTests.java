@@ -1,6 +1,7 @@
 package cn.eskyzdt.wordgame;
 
 import cn.eskyzdt.wordgame.entity.usr.User;
+import cn.eskyzdt.wordgame.mapper.usr.UserMapper;
 import cn.eskyzdt.wordgame.service.usr.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,12 +20,10 @@ public class WordgameApplicationTests {
 
 
     @Resource
-    private cn.eskyzdt.wordgame.mapper.usr.UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Test
     public void contextLoads() {
-        User user = userMapper.queryOne();
-        System.out.println(user);
         User user1 = userMapper.selectById(1);
         System.out.println(user1);
     }

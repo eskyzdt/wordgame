@@ -41,26 +41,14 @@
         <img :src="url"/>
     </div>
 
- <!--   <form action="/user/annoTest" enctype="text/plain" id="formA">
-        <p>用户名:<input type="text" name="username"/></p>
-        <p>&emsp;密码:<input type="text" name="password"/></p>
-        <p>时间测试:<input type="text" name="createTime"/></p>
-        <a href="#/regist" style="color: #999999">注册</a>
-        <router-link to="/login" tag="button">按钮</router-link>
-        <input type="submit" value="登陆"/>
-    </form>-->
 
-    <form action="/user/annoTest" enctype="text/plain" id="formA">
+    <form action="/wordgame/user/login" enctype="text/plain" id="formA">
         <p class="">用户名:<input type="text" name="username"/></p>
         <p class="">&emsp;密码:<input type="text" name="password"/></p>
-        <!--点一下注册按钮则展示show01的内容,默认是到login,展示show02-->
-        <router-link to="/regist" tag="button">注册</router-link>
+        <button type="button" onclick="location='regist.html'">注册</button>
         <input type="submit" value="登陆"/>
     </form>
 
-    <com></com>
-    <router-view></router-view>
-    <com1></com1>
     <div class="footer">
         {{foot}}
     </div>
@@ -84,16 +72,6 @@
         template: '<p class="vocal">点击注册按钮</p> '
     };
 
-/*    var show1 = Vue.extend({
-        template: '<h1>组件1</h1>'
-    });
-    //定义了一个组件com1
-    Vue.component('com', show1);
-
-    // 第二种方式,一步完成
-    Vue.component('com1', Vue.extend({template: '<h2>组件2</h2>'}))*/
-
-    // 注意这个也需要放在new Vue的前面
     var routerObj = new VueRouter({
         routes:
             [
@@ -103,21 +81,20 @@
                 }, {
                 path: '/regist',        //这个表示监听哪个路由的链接地址
                 component: show01           //表示如果匹配到了,那么就展示component属性对应的那个组件
-                //注意component 里面的这个regist必须是一个直接的模板对象
+
             },
                 {
                     path: '/login',        //这个表示监听哪个路由的链接地址
                     component: show02           //表示如果匹配到了,那么就展示component属性对应的那个组件
-                    //注意component 里面的这个regist必须是一个直接的模板对象
                 }]
     });
 
     var vm = new Vue({
         el: "#app",
         data: {
-            head: "网站测试",
+            head: "WORD GAME",
             foot: "皖ICP备19017745号-1",
-            url: "./aa.jpg"
+            url: "./pic/index.jpg"
         },
         methods: {},
         router: routerObj

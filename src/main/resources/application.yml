@@ -26,3 +26,6 @@ mybatis:
   ## 仅仅是无法封装进对象而已,并不会报错
   configuration:
     map-underscore-to-camel-case: true
+
+workid: 0
+datacenterId: 0
