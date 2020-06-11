@@ -33,28 +33,24 @@
 
 </head>
 <body>
-<!--主页 登陆界面-->
+
 <!--vue-->
 <div id="app">
     <h1 class="head"> {{head}}</h1>
     <div class="head">
-        <img :src="url"/>
+
     </div>
+        <p class="centerType"></p>
+        <p class="centerType"></p>
 
-
-    <form action="/wordgame/user/login" enctype="text/plain" id="formA">
-        <p class="">用户名:<input type="text" name="username"/></p>
-        <p class="">&emsp;密码:<input type="password" name="password"/></p>
-        <button type="button" onclick="location='regist.html'">注册</button>
-        <input type="submit" value="登陆"/>
-    </form>
-
+    <p class="centerType"><button  type="button" onclick="">我的宠物</button>
+    </p>
     <div class="footer">
         {{foot}}
     </div>
 </div>
 <!--vue结束-->
-
+<!--登陆后主页面-->
 </body>
 <script src="vue.js"></script>
 <script src="vue-router.js"></script>
@@ -65,8 +61,8 @@
         el: "#app",
         data: {
             head: "WORD GAME",
-            foot: "皖ICP备19017745号-1",
-            url: "./pic/index.jpg"
+            foot: "皖ICP备19017745号-1"
+
         },
         methods: {}
     });

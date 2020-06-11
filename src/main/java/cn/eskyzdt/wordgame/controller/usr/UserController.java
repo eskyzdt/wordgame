@@ -76,7 +76,7 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public void login(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
+    public Result login(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
         String username = param.get("username");
         String password = param.get("password");
         if (StringUtils.isEmpty(username)) {
@@ -98,6 +98,10 @@ public class UserController {
             // 在session中存入token和用户名对应的
             HttpSession session = request.getSession();
             session.setAttribute("token", username);
+            return Result.ok("登陆成功");
+        } else {
+            // 登陆失败
+            return Result.error("用户名或密码错误");
         }
     }
 
