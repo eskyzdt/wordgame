@@ -2,8 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <!-- 引入样式 -->
+    <link rel="stylesheet" href="css/index.css">
 
-    <!-- import Vue before Element -->
     <style>
         .head {
             /*color: #66CCFF;*/
@@ -22,12 +22,9 @@
             text-align: center;
         }
 
-        #formA {
-            text-align: center;
-        }
-
-        .centerType {
-            text-align: center;
+        .inputWidth {
+            width: 30%;
+            align-items: end;
         }
     </style>
 
@@ -40,37 +37,79 @@
     <div class="head">
         <img :src="url" width="50%" height="50%"/>
     </div>
-
-    <form action="/wordgame/user/regist" enctype="text/plain" id="formA">
-        <p class="">用户名:<input type="text" name="username"/></p>
-        <p class="">&emsp;密码:<input type="text" name="password"/></p>
-        <p class="">&emsp;电话:<input type="text" name="phone"/></p>
-        <p class="">&emsp;邮箱:<input type="text" name="email"/></p>
-        <input type="submit" value="注册"/>
+    <br>
+    <form enctype="text/plain" style="text-align: center">
+        <div>用户名:
+            <el-input class="inputWidth" placeholder="请输入用户名" v-model="username" size="medium" clearable></el-input>
+        </div>
+        <br>
+        <div>密码&nbsp:
+            <el-input class="inputWidth" placeholder="请输入密码" v-model="password" size="medium" show-password></el-input>
+        </div>
+        <br>
+        <div>电话&nbsp:
+            <el-input class="inputWidth" placeholder="请输入密码" v-model="phone" size="medium" clearable></el-input>
+        </div>
+        <br>
+        <div>邮箱&nbsp:
+            <el-input class="inputWidth" placeholder="请输入密码" v-model="email" size="medium" clearable></el-input>
+        </div>
+        <br>
+        <el-button @click="regist(username, password,phone, email)" type="primary">注册</el-button>
     </form>
 
     <div class="footer">
         {{foot}}
     </div>
+    <el-button @click="jump()" type="primary">跳转</el-button>
 </div>
 <!--vue结束-->
-
+static/js/axios.min.js
 </body>
-<script src="vue.js"></script>
-<script src="vue-router.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script src="js/index.js"></script>
+<script src="js/axios.min.js"></script>
 
 <script>
-    var routerObj = new VueRouter({
-
-    });
+    var routerObj = new VueRouter({});
     var vm = new Vue({
         el: "#app",
         data: {
             head: "用户注册",
             foot: "皖ICP备19017745号-1",
-            url: "./pic/regist.png"
+            url: "./pic/regist.png",
+            username: "",
+            password: "",
+            phone: "",
+            email: ""
         },
-        methods: {},
+        methods: {
+            regist: function (_username, _password, _phone, _email) {
+                axios.get('/wordgame/user/regist', {
+                    params: {
+                        username: _username,
+                        password: _password,
+                        phone: _phone,
+                        email: _email
+                    }
+                })
+                    .then(function (response) {
+                        alert(response.data.msg)
+                        // console.info(response); 控制台打印信息
+                        // console.error(response); 控制台打印错误信息
+                        if (response.data.code == 0) {
+                            // 跳转
+                            this.$router.push({routerObj:'/wordgame/user/login'})
+                        }
+                    })
+                    .catch(function (e) {
+                    });
+            },
+            jump: function () {
+                this.$router.push({path:'/wordgame/user/login'})
+            }
+        },
         router: routerObj
     });
 

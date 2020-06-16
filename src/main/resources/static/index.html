@@ -2,8 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <!-- 引入样式 -->
-
-    <!-- import Vue before Element -->
+    <link rel="stylesheet" href="css/index.css">
     <style>
         .head {
             /*color: #66CCFF;*/
@@ -26,8 +25,9 @@
             text-align: center;
         }
 
-        .centerType {
-            text-align: center;
+        .inputWidth {
+            width:30%;
+            align-items: end;
         }
     </style>
 
@@ -41,24 +41,34 @@
         <img :src="url"/>
     </div>
 
+    <el-dialog :visible.sync="dialogVisible" title="提示">
+        <span>{{attention}}</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+    </el-dialog>
 
     <form action="/wordgame/user/login" enctype="text/plain" id="formA">
-        <p class="">用户名:<input type="text" name="username"/></p>
-        <p class="">&emsp;密码:<input type="password" name="password"/></p>
-        <button type="button" onclick="location='regist.html'">注册</button>
-        <input type="submit" value="登陆"/>
+        <div>用户名:<el-input class="inputWidth" placeholder="请输入用户名" v-model="username" size="medium" clearable></el-input></div>
+        <br>
+        <div>密码&nbsp:<el-input class="inputWidth" placeholder="请输入密码" v-model="password" size="medium" show-password></el-input></div>
+        <br>
+        <el-button type="primary" onclick="location='regist.html'">注册</el-button>
+        <el-button type="submit" class="vocal">登陆</el-button>
     </form>
-
+    <br>
     <div class="footer">
         {{foot}}
     </div>
+
 </div>
 <!--vue结束-->
 
 </body>
-<script src="vue.js"></script>
-<script src="vue-router.js"></script>
-
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script src="js/index.js"></script>
 <script>
 
     var vm = new Vue({
@@ -66,7 +76,14 @@
         data: {
             head: "WORD GAME",
             foot: "皖ICP备19017745号-1",
-            url: "./pic/index.jpg"
+            url: "./pic/index.jpg",
+            closeDialog: function () {
+                return {dialogVisible: false}
+            },
+            dialogVisible: false,
+            attention: "提示",
+            username: "",
+            password: ""
         },
         methods: {}
     });
