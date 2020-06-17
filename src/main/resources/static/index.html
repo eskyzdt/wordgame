@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="css/index.css">
     <style>
         .head {
+             /*color: #66CCFF;*/
+             text-align: center;
+         }
+
+        .intro {
             /*color: #66CCFF;*/
             text-align: center;
         }
@@ -37,6 +42,7 @@
 <!--vue-->
 <div id="app">
     <h1 class="head"> {{head}}</h1>
+    <h2 class="intro"> {{intro}}</h2>
     <div class="head">
         <img :src="url"/>
     </div>
@@ -80,6 +86,7 @@
         data: {
             head: "WORD GAME",
             foot: "皖ICP备19017745号-1",
+            intro: "说明: 一个正在开发中的养宠物小游戏",
             url: "./pic/index.jpg",
             closeDialog: function () {
                 return {dialogVisible: false}
