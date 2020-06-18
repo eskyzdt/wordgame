@@ -3,30 +3,7 @@
     <meta charset="UTF-8">
     <!-- 引入样式 -->
     <link rel="stylesheet" href="css/index.css">
-
-    <style>
-        .head {
-            /*color: #66CCFF;*/
-            text-align: center;
-        }
-
-        .footer {
-            color: #999;
-            size: A4;
-            text-align: center;
-        }
-
-        /*天依蓝*/
-        .vocal {
-            color: #66CCFF;
-            text-align: center;
-        }
-
-        .inputWidth {
-            width: 30%;
-            align-items: end;
-        }
-    </style>
+    <link type="text/css" href="css/main.css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -56,8 +33,12 @@
         </div>
         <br>
         <el-button @click="regist(username, password,phone, email)" type="primary">注册</el-button>
+        <el-button type="primary" onclick="location='index.html'">返回</el-button>
     </form>
 
+    <br>
+
+    <br>
     <div class="footer">
         {{foot}}
     </div>
@@ -94,13 +75,11 @@
         },
         methods: {
             regist: function (_username, _password, _phone, _email) {
-                axios.get('/wordgame/user/regist', {
-                    params: {
+                axios.post('/wordgame/user/regist', {
                         username: _username,
                         password: _password,
                         phone: _phone,
                         email: _email
-                    }
                 })
                     .then(function (response) {
                         alert(response.data.msg)

@@ -2,34 +2,8 @@
 <head>
     <meta charset="UTF-8">
     <!-- 引入样式 -->
-
-    <!-- import Vue before Element -->
-    <style>
-        .head {
-            /*color: #66CCFF;*/
-            text-align: center;
-        }
-
-        .footer {
-            color: #999;
-            size: A4;
-            text-align: center;
-        }
-
-        /*天依蓝*/
-        .vocal {
-            color: #66CCFF;
-            text-align: center;
-        }
-
-        #formA {
-            text-align: center;
-        }
-
-        .centerType {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="css/index.css">
+    <link type="text/css" href="css/main.css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -37,36 +11,112 @@
 <!--vue-->
 <div id="app">
     <h1 class="head"> {{head}}</h1>
-    <div class="head">
 
+    <p class="centerType">
+        <el-button type="primary" @click="mypet()">我的宠物</el-button>
+        <el-button type="primary" @click="draw()">砸蛋</el-button>
+        <el-button type="danger" @click="discard()">放生宠物</el-button>
+    </p>
+    <div style="display: none;" id="petShow">
+        <p class="word"><img :src="petData.pic"/></p>
+        <p class="word">等级:{{petData.level}}</p>
+        <p class="word">名称:{{petData.name}}</p>
+        <p class="word">品级:{{petData.quality}}</p>
     </div>
-        <p class="centerType"></p>
-        <p class="centerType"></p>
-
-    <p class="centerType"><button  type="button" onclick="">我的宠物</button>
+    <router-view></router-view>
+    <br>
+    <p class="centerType">
+        <el-button type="primary" onclick="location='index.html'">返回主页</el-button>
     </p>
     <div class="footer">
         {{foot}}
     </div>
+
 </div>
 <!--vue结束-->
 <!--登陆后主页面-->
 </body>
 <script src="js/vue.js"></script>
 <script src="js/vue-router.js"></script>
+<script src="js/index.js"></script>
+<script src="js/axios.min.js"></script>
 
 <script>
+
+    var petPlug = Vue.component('petPlug', Vue.extend({
+        template: ''
+    }));
+
+    // 设置路由,跳转到登陆界面
+    var routerObj = new VueRouter({
+        // 不加上这个,跳转时会带#,美化了,history是老版的
+        // mode: 'history',
+        routes: []
+    });
 
     var vm = new Vue({
         el: "#app",
         data: {
             head: "WORD GAME",
-            foot: "皖ICP备19017745号-1"
-
+            foot: "皖ICP备19017745号-1",
+            petId: "",
+            petData: {
+                pic: "",
+                level: "",
+                name: "",
+                quality: ""
+            }
         },
-        methods: {}
+        router: routerObj,
+        methods: {
+            draw() {
+                axios.post('/pet/draw', {
+                    params: {}
+                }).then((response) => {
+                    if (response.data.code = 500) {
+                        alert(response.data.msg);
+                    }
+                    if (response.data.code == 0) {
+                        // 跳转
+                        alert(response.data.msg)
+                    }
+                })
+            },
+            // 我的宠物
+            mypet() {
+                axios.post('/pet/myPet', {}).then((response) => {
+                    if (response.data.code == 500) {
+                        alert(response.data.msg);
+                    }
+                    if (response.data.code == 0) {
+                        var showOrNot = document.getElementById("petShow").style.display;
+                        if (showOrNot == "none") {
+                            document.getElementById("petShow").style.display = "block";
+                        }  else {
+                            document.getElementById("petShow").style.display = "none";
+                        }
+                        var result = response.data.result
+                        this.petData.pic = result.pic;
+                        this.petData.level = result.level;
+                        this.petData.name = result.name;
+                        this.petData.quality = result.quality;
+                    }
+                })
+            },
+            // 放生宠物
+            discard() {
+                axios.post('/pet/discard', {}).then((response) => {
+                    if (response.data.code == 500) {
+                        alert(response.data.msg);
+                    }
+                    if (response.data.code == 0) {
+                        // 跳转
+                        alert(response.data.msg)
+                    }
+                })
+            }
+        }
     });
-
 </script>
 
 

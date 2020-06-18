@@ -7,18 +7,19 @@ import cn.eskyzdt.wordgame.module.result.Result;
 import cn.eskyzdt.wordgame.module.utils.encrypt.EncryptUtil;
 import cn.eskyzdt.wordgame.service.usr.IUserService;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -35,12 +36,15 @@ public class UserController {
     @Resource
     private IUserService userService;
 
+    @Resource
+    private RedisTemplate redisTemplate;
+
     @RequestMapping("/regist")
-    public Result regist(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
+    public Result regist(@RequestBody Map<String, String> param) {
         String username = param.get("username");
         String password = param.get("password");
 
-        String phone= param.get("phone");
+        String phone = param.get("phone");
         String email = param.get("email");
         if (StringUtils.isEmpty(username)) {
             throw new WrongException("用户名不能为空");
@@ -62,7 +66,7 @@ public class UserController {
         user.setPassword(password);
         user.setPhone(phone);
         user.setEmail(email);
-        boolean result= false;
+        boolean result = false;
         try {
             result = userService.save(user);
         } catch (DuplicateKeyException e) {
@@ -76,7 +80,7 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public Result login(@RequestParam Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
+    public Result login(@RequestBody Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
         String username = param.get("username");
         String password = param.get("password");
         if (StringUtils.isEmpty(username)) {
@@ -92,28 +96,16 @@ public class UserController {
             // 创建一个随机数作为身份认证标识
             long randomNum = ThreadLocalRandom.current().nextLong();
             String token = String.valueOf(randomNum);
-            // 暂时没用的cookie
+            // 这个token存入cookie
             response.addCookie(new Cookie("webgame_token", token));
-
-            // 在session中存入token和用户名对应的
-            HttpSession session = request.getSession();
-            session.setAttribute("token", username);
+            // 在redis中存入token和用户名,根据token获得用户
+            // 这里暂时用jessionId
+            redisTemplate.opsForValue().set(request.getSession().getId(), one.getId(), 1, TimeUnit.HOURS);
             return Result.ok("登陆成功");
         } else {
             // 登陆失败
             return Result.error("用户名或密码错误");
         }
-    }
-
-    /**
-     * 根据session获取用户名
-     * @param request
-     * @return
-     */
-    public String getUsername(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String token = (String) session.getAttribute("token");
-        return token;
     }
 
 }

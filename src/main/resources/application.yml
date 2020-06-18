@@ -13,6 +13,12 @@ spring:
       max-wait: 60000
       username: root
       password: roottoor
+  redis:
+    database: 0
+    host: 49.235.24.173
+    password: eskyzdt63796379
+    port: 6380
+    timeout: 2000
   mvc:
     view:
       suffix: .html

@@ -1,0 +1,38 @@
+@charset "UTF-8";
+.head {
+    /*color: #66CCFF;*/
+    text-align: center;
+}
+
+.footer {
+    color: #999;
+    size: A4;
+    text-align: center;
+}
+
+/*天依蓝*/
+.vocal {
+    color: #66CCFF;
+    text-align: center;
+}
+
+.centerType {
+    text-align: center;
+}
+
+.inputWidth {
+    width: 30%;
+    align-items: end;
+}
+
+.word {
+    margin-left: 40%;
+    font-size: 20px;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+
+/*index.html中的介绍*/
+.intro {
+    /*color: #66CCFF;*/
+    text-align: center;
+}
