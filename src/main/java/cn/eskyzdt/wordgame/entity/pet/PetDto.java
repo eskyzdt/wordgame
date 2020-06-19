@@ -12,6 +12,16 @@ public class PetDto  extends Pet{
 
     private String itemName;
 
+    public String getQualityStr() {
+        return qualityStr;
+    }
+
+    public void setQualityStr(String qualityStr) {
+        this.qualityStr = qualityStr;
+    }
+
+    private String qualityStr;
+
     public String getItemName() {
         return itemName;
     }
