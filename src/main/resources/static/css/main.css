@@ -36,3 +36,7 @@
     /*color: #66CCFF;*/
     text-align: center;
 }
+
+[v-cloak]{
+    display: none;
+}
