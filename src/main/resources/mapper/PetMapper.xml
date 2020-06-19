@@ -9,7 +9,7 @@
             p.nick_name,
             p.pic,
             p.`level`,
-            case p.quality when 1 then "普通" when 2 then "精品" when 3 then "稀有" when 4 then "传说" when 5 then "5史诗" when 6  then "神话" end ,
+            case p.quality when 1 then "普通" when 2 then "精品" when 3 then "稀有" when 4 then "传说" when 5 then "5史诗" when 6  then "神话" end quality,
             p.exp,
             p.ce,
             p.gold,
