@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.eskyzdt.wordgame.mapper.pet.PetMapper">
+
+    <select id="queryMyPet" resultType="cn.eskyzdt.wordgame.entity.pet.PetDto">
+        SELECT
+            p.id,
+            p.user_id,
+            p.nick_name,
+            p.pic,
+            p.`level`,
+            p.quality,
+            p.exp,
+            p.ce,
+            p.gold,
+            p.dp,
+            p.de,
+            p.hd,
+            p.hp,
+            p.mp,
+            p.maxhd,
+            p.maxhp,
+            p.maxmp,
+            i.item_name item,
+            t.`name`
+        FROM
+            ( `pet` p, `user` u, pet_type t )
+            LEFT JOIN item i ON i.id = p.item
+        WHERE
+            u.id = #{userId}
+          	AND p.user_id = u.id
+            AND p.pet_type = t.id
+    </select>
+
+</mapper>

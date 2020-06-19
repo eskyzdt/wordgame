@@ -10,33 +10,19 @@ import lombok.Data;
  * </p>
  *
  * @author timber
- * @since 2020-06-18
+ * @since 2020-06-19
  */
 @Data
-public class Pet {
+public class PetType {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * id
-     */
     @TableId(type = IdType.AUTO)
-    private Integer id;
-
+    private String id;
     /**
-     * 和user表关联的字段
-     */
-    private Long userId;
-
-    /**
-     * 宠物名称,冗余存储
+     * 宠物名称
      */
     private String name;
-
-    /**
-     * 宠物昵称
-     */
-    private String nickName;
 
     /**
      * 宠物头像
@@ -52,11 +38,6 @@ public class Pet {
      * 品级 1.普通 2.精品 3.稀有 4.传说 5史诗 6.神话  品质:0白色,1绿色,2蓝色,3红色,4金色
      */
     private Integer quality;
-
-    /**
-     * 宠物类型 1.朱雀 2.玄武 3.
-     */
-    private Integer petType;
 
     /**
      * 神器
@@ -203,5 +184,26 @@ public class Pet {
      */
     private Integer hand;
 
+    public Pet toPet() {
+        Pet pet = new Pet();
+        pet.setName(this.name);
+        pet.setPic(this.pic);
+        pet.setLevel(this.level);
+        pet.setQuality(this.quality);
+        pet.setPetType(new Integer(this.id));
+        pet.setItem(this.item);
+        pet.setExp(this.exp);
+        pet.setCe(this.ce);
+        pet.setGold(this.gold);
+        pet.setDp(this.dp);
+        pet.setDe(this.de);
 
+        pet.setHp(this.hp);
+        pet.setMp(this.mp);
+        pet.setHd(this.hd);
+        pet.setMaxhp(this.hp);
+        pet.setMaxmp(this.mp);
+        pet.setMaxhd(this.hd);
+        return pet;
+    }
 }

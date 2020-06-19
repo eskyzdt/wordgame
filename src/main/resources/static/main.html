@@ -15,13 +15,31 @@
     <p class="centerType">
         <el-button type="primary" @click="mypet()">我的宠物</el-button>
         <el-button type="primary" @click="draw()">砸蛋</el-button>
-        <el-button type="danger" @click="discard()">放生宠物</el-button>
+        <el-button type="danger" @click="dialogVis = true">放生宠物</el-button>
     </p>
+
     <div style="display: none;" id="petShow">
-        <p class="word"><img :src="petData.pic"/></p>
-        <p class="word">等级:{{petData.level}}</p>
-        <p class="word">名称:{{petData.name}}</p>
-        <p class="word">品级:{{petData.quality}}</p>
+        <div class="block">
+            <el-image
+                    class="word"
+                    style="width: 10%; height: 10%"
+                    :src="petData.pic"
+            ></el-image>
+        </div>
+        <div class="word">
+            <!--<p class="word"><img :src="petData.pic"/></p>-->
+            <p>等级:{{petData.level}}</p>
+            <p>名称:{{petData.name}}</p>
+            <p>品级:{{petData.quality}}</p>
+            <p>经验:{{petData.exp}}</p>
+            <p>攻击:{{petData.dp}}</p>
+            <p>防御:{{petData.de}}</p>
+            <p>体力:{{petData.hd}}/{{petData.maxhd}}</p>
+            <p>hp:{{petData.hp}}/{{petData.maxhp}}</p>
+            <p>mp:{{petData.mp}}/{{petData.maxmp}}</p>
+            <p>神器:{{petData.itemName}}</p>
+            <p>金钱:{{petData.gold}}</p>
+        </div>
     </div>
     <router-view></router-view>
     <br>
@@ -31,6 +49,16 @@
     <div class="footer">
         {{foot}}
     </div>
+
+
+    <el-dialog title="提示" :visible.sync="dialogVis" width="30%">
+        <span>是否确认放生</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVis = false">取 消</el-button>
+            <el-button type="primary" @click="discard()">确 定</el-button>
+        </span>
+    </el-dialog>
+
 
 </div>
 <!--vue结束-->
@@ -63,9 +91,21 @@
             petData: {
                 pic: "",
                 level: "",
-                name: "",
-                quality: ""
-            }
+                itemName: "",
+                quality: "",
+                exp: "",
+                dp: "",
+                de: "",
+                hd: "",
+                maxhd: "",
+                hp: "",
+                maxhp: "",
+                mp: "",
+                maxmp: "",
+                item: "",
+                gold: ""
+            },
+            dialogVis: false
         },
         router: routerObj,
         methods: {
@@ -92,27 +132,22 @@
                         var showOrNot = document.getElementById("petShow").style.display;
                         if (showOrNot == "none") {
                             document.getElementById("petShow").style.display = "block";
-                        }  else {
+                        } else {
                             document.getElementById("petShow").style.display = "none";
                         }
-                        var result = response.data.result
-                        this.petData.pic = result.pic;
-                        this.petData.level = result.level;
-                        this.petData.name = result.name;
-                        this.petData.quality = result.quality;
+                        var result = response.data.result;
+                        Object.assign(this.petData, result)
                     }
                 })
             },
             // 放生宠物
             discard() {
                 axios.post('/pet/discard', {}).then((response) => {
-                    if (response.data.code == 500) {
-                        alert(response.data.msg);
-                    }
-                    if (response.data.code == 0) {
-                        // 跳转
-                        alert(response.data.msg)
-                    }
+                    this.$confirm(response.data.msg,"提示", {
+                        confirmButtonText: '好的',
+                        cancelButtonText: '',
+                        type: 'warning',
+                    });
                 })
             }
         }

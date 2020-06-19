@@ -3,8 +3,11 @@ package cn.eskyzdt.wordgame.controller.pet;
 
 import cn.eskyzdt.wordgame.controller.BaseMapper;
 import cn.eskyzdt.wordgame.entity.pet.Pet;
+import cn.eskyzdt.wordgame.entity.pet.PetDto;
+import cn.eskyzdt.wordgame.entity.pet.PetType;
 import cn.eskyzdt.wordgame.module.result.Result;
 import cn.eskyzdt.wordgame.service.pet.IPetService;
+import cn.eskyzdt.wordgame.service.pet.IPetTypeService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -29,6 +34,9 @@ public class PetController extends BaseMapper {
     @Resource
     private IPetService petService;
 
+    @Resource
+    private IPetTypeService petTypeService;
+
     /**
      * 查询宠物详情的功能
      * @param request
@@ -37,7 +45,10 @@ public class PetController extends BaseMapper {
     @RequestMapping("/myPet")
     public Result myPet(HttpServletRequest request) {
         Long userId = getAuth(request);
-        Pet pet = petService.query().eq("user_id", userId).one();
+       // Pet pet = petService.query().eq("user_id", userId).one();
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("userId", userId);
+        PetDto pet = petService.queryMyPet(param);
         if (pet == null) {
             return Result.error("您还没有宠物,砸个蛋试试吧");
         }
@@ -53,16 +64,19 @@ public class PetController extends BaseMapper {
     public Result drawPet(HttpServletRequest request) {
         Long userId = getAuth(request);
         // 砸蛋
-        Math.random();
-        Pet pet = new Pet();
-        // todo 一个随机的宠物
-        String name = "朱雀";
-        Integer type = 1;
-        pet.setPetType(type);
-        pet.setName(name);
-        pet.setPic("./petpic/zhuque.jpg");
-        // todo 一个随机的品质
-        int quality = 6;
+        Random random = new Random();
+        // 查出宠物总数量
+        int count = petTypeService.queryCount();
+        //  一个随机的宠物
+        int i = 0;
+        while (i == 0) {
+            i = random.nextInt(count);
+        }
+        // 查出这个宠物
+        PetType petModel = petTypeService.query().eq("id", i).one();
+        Pet pet = petModel.toPet();
+        // 一个随机的品质
+        int quality = random.nextInt(6);
         pet.setQuality(quality);
         // 宠物与用户关联
         pet.setUserId(userId);
@@ -75,7 +89,7 @@ public class PetController extends BaseMapper {
                 return Result.error("您已经有一个宠物了");
             }
         }
-        return getResult(name, quality);
+        return getResult(petModel.getName(), quality);
     }
 
     /**
@@ -91,10 +105,10 @@ public class PetController extends BaseMapper {
                 qua = "普通";
                 break;
             case 2:
-                qua = "稀有";
+                qua = "精品";
                 break;
             case 3:
-                qua = "神级";
+                qua = "稀有";
                 break;
             case 4:
                 qua = "传说";
@@ -127,6 +141,5 @@ public class PetController extends BaseMapper {
             return Result.error("您还没有宠物,砸个蛋试试吧");
         }
     }
-
 
 }
