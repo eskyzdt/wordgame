@@ -51,6 +51,19 @@
     </div>
 
 
+    <el-dialog
+            title="提示"
+            :visible.sync="centerDialogVisible"
+            width="30%"
+            center>
+        <span>{{drawMsg}}</span>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="centerDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
+
+
     <el-dialog title="提示" :visible.sync="dialogVis" width="30%">
         <span>是否确认放生</span>
         <span slot="footer" class="dialog-footer">
@@ -88,6 +101,9 @@
             head: "WORD GAME",
             foot: "皖ICP备19017745号-1",
             petId: "",
+            drawMsg: "",
+            /*砸蛋的对话框*/
+            centerDialogVisible: false,
             petData: {
                 pic: "",
                 level: "",
@@ -105,6 +121,7 @@
                 item: "",
                 gold: ""
             },
+            // 放生宠物的对话框
             dialogVis: false
         },
         router: routerObj,
@@ -113,13 +130,8 @@
                 axios.post('/pet/draw', {
                     params: {}
                 }).then((response) => {
-                    if (response.data.code = 500) {
-                        alert(response.data.msg);
-                    }
-                    if (response.data.code == 0) {
-                        // 跳转
-                        alert(response.data.msg)
-                    }
+                    this.drawMsg = response.data.msg;
+                    this.centerDialogVisible = true
                 })
             },
             // 我的宠物
@@ -140,16 +152,41 @@
                     }
                 })
             },
+
             // 放生宠物
             discard() {
                 axios.post('/pet/discard', {}).then((response) => {
-                    this.$confirm(response.data.msg,"提示", {
-                        confirmButtonText: '好的',
-                        cancelButtonText: '',
-                        type: 'warning',
-                    });
-                })
+                    if (response.data.code == 0) {
+                        this.$message({
+                            message: response.data.msg,
+                            type: 'success',
+                            offset: 300
+                        });
+                        document.getElementById("petShow").style.display = "none";
+                    } else {
+                        this.$message({
+                            message: response.data.msg,
+                            type: 'error',
+                            offset: 300
+                        })
+                    }
+                    this.dialogVis = false;
+                });
             }
+
+
+
+            /* // 放生宠物
+             discard() {
+                 axios.post('/pet/discard', {}).then((response) => {
+                     this.$confirm(response.data.msg,"提示", {
+                         confirmButtonText: '好的',
+                         cancelButtonText: '',
+                         type: 'warning',
+                     });
+                 })
+             }*/
+
         }
     });
 </script>
