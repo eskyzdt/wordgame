@@ -50,4 +50,9 @@ public class User {
      */
     private LocalDateTime createTime;
 
+    private Role role;
+
+    public enum Role{
+        admin,user;
+    }
 }

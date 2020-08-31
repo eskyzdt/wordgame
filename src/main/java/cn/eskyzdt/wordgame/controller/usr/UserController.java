@@ -8,6 +8,7 @@ import cn.eskyzdt.wordgame.module.utils.encrypt.EncryptUtil;
 import cn.eskyzdt.wordgame.service.usr.IUserService;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,18 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/wordgame/user")
 public class UserController {
+
+    @RequestMapping("test")
+    @PreAuthorize("hasAnyRole('admin')")
+    public String test(){
+     return "hello";
+    }
+
+    @RequestMapping("test2")
+    @PreAuthorize("hasAnyRole('user')")
+    public String test2(){
+        return "hello2";
+    }
 
     @Resource
     private IUserService userService;
@@ -79,6 +92,7 @@ public class UserController {
         }
     }
 
+
     @RequestMapping("/login")
     public Result login(@RequestBody Map<String, String> param, HttpServletRequest request, HttpServletResponse response) {
         String username = param.get("username");
@@ -97,7 +111,13 @@ public class UserController {
             long randomNum = ThreadLocalRandom.current().nextLong();
             String token = String.valueOf(randomNum);
             // 这个token存入cookie
-            response.addCookie(new Cookie("webgame_token", token));
+            Cookie webgame_token = new Cookie("webgame_token", token);
+            webgame_token.setHttpOnly(true);
+            webgame_token.setMaxAge(60);
+           // webgame_token.setDomain("127.0.0.1");
+            webgame_token.setPath("/");
+            response.addCookie(webgame_token);
+
             // 在redis中存入token和用户名,根据token获得用户
             // 这里暂时用jessionId
             redisTemplate.opsForValue().set(request.getSession().getId(), one.getId(), 1, TimeUnit.HOURS);

@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.eskyzdt.wordgame.mapper.pet.PetMapper">
 
+    <!--多表加上left join 时需要加个括号,如下-->
     <select id="queryMyPet" resultType="cn.eskyzdt.wordgame.entity.pet.PetDto">
         SELECT
             p.id,
@@ -9,7 +10,8 @@
             p.nick_name,
             p.pic,
             p.`level`,
-            case p.quality when 1 then "普通" when 2 then "精品" when 3 then "稀有" when 4 then "传说" when 5 then "5史诗" when 6  then "神话" end qualityStr,
+            p.quality,
+            case p.quality when 1 then "普通" when 2 then "精品" when 3 then "稀有" when 4 then "传说" when 5 then "史诗" when 6  then "神话" end qualityStr,
             p.exp,
             p.ce,
             p.gold,

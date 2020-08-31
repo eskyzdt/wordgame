@@ -1,5 +1,7 @@
-POST http://127.0.0.1:80/validate
+POST http://127.0.0.1:80//wordgame/index-msg/query
 Content-Type: application/json
 Cache-Control: no-cache
 Accept: */*
+
+###
 
