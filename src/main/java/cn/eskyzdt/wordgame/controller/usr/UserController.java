@@ -4,11 +4,9 @@ package cn.eskyzdt.wordgame.controller.usr;
 import cn.eskyzdt.wordgame.entity.usr.User;
 import cn.eskyzdt.wordgame.module.exception.WrongException;
 import cn.eskyzdt.wordgame.module.result.Result;
-import cn.eskyzdt.wordgame.module.utils.encrypt.EncryptUtil;
 import cn.eskyzdt.wordgame.service.usr.IUserService;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -35,13 +32,13 @@ import java.util.concurrent.TimeUnit;
 public class UserController {
 
     @RequestMapping("test")
-    @PreAuthorize("hasAnyRole('admin')")
+    //@PreAuthorize("hasAnyRole('admin')")
     public String test(){
      return "hello";
     }
 
     @RequestMapping("test2")
-    @PreAuthorize("hasAnyRole('user')")
+   // @PreAuthorize("hasAnyRole('user')")
     public String test2(){
         return "hello2";
     }
@@ -73,7 +70,7 @@ public class UserController {
         }
         // 注册
         // 注册时加密密码
-        password = EncryptUtil.passwordEncrypt(password);
+       // password = EncryptUtil.passwordEncrypt(password);
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
@@ -104,7 +101,7 @@ public class UserController {
             throw new WrongException("密码不能为空");
         }
         // 密码加密后进行比对,防止库泄露
-        password = EncryptUtil.passwordEncrypt(password);
+  //      password = EncryptUtil.passwordEncrypt(password);
         User one = userService.query().eq("username", username).eq("password", password).one();
         if (one != null) {
             // 创建一个随机数作为身份认证标识
@@ -120,7 +117,7 @@ public class UserController {
 
             // 在redis中存入token和用户名,根据token获得用户
             // 这里暂时用jessionId
-            redisTemplate.opsForValue().set(request.getSession().getId(), one.getId(), 1, TimeUnit.HOURS);
+          //  redisTemplate.opsForValue().set(request.getSession().getId(), one.getId(), 1, TimeUnit.HOURS);
             return Result.ok("登陆成功");
         } else {
             // 登陆失败

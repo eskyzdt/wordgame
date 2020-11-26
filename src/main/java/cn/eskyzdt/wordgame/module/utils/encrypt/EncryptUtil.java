@@ -1,3 +1,4 @@
+/*
 package cn.eskyzdt.wordgame.module.utils.encrypt;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -6,12 +7,14 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+*/
 /**
  * 加密工具类
  *
  * @author dongtian
  * @since 2020/6/10
- */
+ *//*
+
 public class EncryptUtil implements PasswordEncoder {
 
     public static String passwordEncrypt(String password) {
@@ -61,3 +64,4 @@ public class EncryptUtil implements PasswordEncoder {
 }
 
 
+*/
