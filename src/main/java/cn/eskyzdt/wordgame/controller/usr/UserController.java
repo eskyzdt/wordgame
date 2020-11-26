@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -33,13 +34,13 @@ public class UserController {
 
     @RequestMapping("test")
     //@PreAuthorize("hasAnyRole('admin')")
-    public String test(){
-     return "hello";
+    public String test() {
+        return "hello";
     }
 
     @RequestMapping("test2")
-   // @PreAuthorize("hasAnyRole('user')")
-    public String test2(){
+    // @PreAuthorize("hasAnyRole('user')")
+    public String test2() {
         return "hello2";
     }
 
@@ -70,7 +71,7 @@ public class UserController {
         }
         // 注册
         // 注册时加密密码
-       // password = EncryptUtil.passwordEncrypt(password);
+        // password = EncryptUtil.passwordEncrypt(password);
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
@@ -101,7 +102,7 @@ public class UserController {
             throw new WrongException("密码不能为空");
         }
         // 密码加密后进行比对,防止库泄露
-  //      password = EncryptUtil.passwordEncrypt(password);
+        //      password = EncryptUtil.passwordEncrypt(password);
         User one = userService.query().eq("username", username).eq("password", password).one();
         if (one != null) {
             // 创建一个随机数作为身份认证标识
@@ -111,13 +112,13 @@ public class UserController {
             Cookie webgame_token = new Cookie("webgame_token", token);
             webgame_token.setHttpOnly(true);
             webgame_token.setMaxAge(60);
-           // webgame_token.setDomain("127.0.0.1");
+            // webgame_token.setDomain("127.0.0.1");
             webgame_token.setPath("/");
             response.addCookie(webgame_token);
 
             // 在redis中存入token和用户名,根据token获得用户
             // 这里暂时用jessionId
-          //  redisTemplate.opsForValue().set(request.getSession().getId(), one.getId(), 1, TimeUnit.HOURS);
+            redisTemplate.opsForValue().set(request.getSession().getId(), one.getId(), 1, TimeUnit.HOURS);
             return Result.ok("登陆成功");
         } else {
             // 登陆失败
